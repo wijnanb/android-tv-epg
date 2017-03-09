@@ -35,6 +35,7 @@ import se.kmdev.tvepg.epg.misc.EPGUtil;
  */
 public class EPG extends ViewGroup {
 
+    private static final float SCROLL_FACTOR = 1.5f;                            // intensity of fling gestures
     public final String TAG = getClass().getSimpleName();
     public static final int DAYS_BACK_MILLIS = 3 * 24 * 60 * 60 * 1000;        // 3 days
     public static final int DAYS_FORWARD_MILLIS = 3 * 24 * 60 * 60 * 1000;     // 3 days
@@ -660,8 +661,8 @@ public class EPG extends ViewGroup {
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2,
                                 float distanceX, float distanceY) {
-            int dx = (int) distanceX;
-            int dy = (int) distanceY;
+            int dx = (int) (distanceX * SCROLL_FACTOR);
+            int dy = (int) (distanceY * SCROLL_FACTOR);
             int x = getScrollX();
             int y = getScrollY();
 
