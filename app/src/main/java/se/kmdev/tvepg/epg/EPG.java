@@ -40,6 +40,7 @@ public class EPG extends ViewGroup {
     public static final int DAYS_FORWARD_MILLIS = 3 * 24 * 60 * 60 * 1000;     // 3 days
     public static final int HOURS_IN_VIEWPORT_MILLIS = 2 * 60 * 60 * 1000;     // 2 hours
     public static final int TIME_LABEL_SPACING_MILLIS = 30 * 60 * 1000;        // 30 minutes
+    public static final boolean STICKY_EVENT_TITLES = true;     // if enabled, titles will not scroll over left side of screen
 
     private final Rect mClipRect;
     private final Rect mDrawingRect;
@@ -326,6 +327,11 @@ public class EPG extends ViewGroup {
         drawingRect.left += mChannelLayoutPadding;
         drawingRect.right -= mChannelLayoutPadding;
 
+        // Sticky text on left side
+        if (STICKY_EVENT_TITLES) {
+            drawingRect.left = Math.max(canvas.getClipBounds().left + mChannelLayoutPadding, drawingRect.left);
+        }
+
         // Text
         mPaint.setColor(mEventLayoutTextColor);
         mPaint.setTextSize(mEventLayoutTextSize);
@@ -337,8 +343,8 @@ public class EPG extends ViewGroup {
         String title = event.getTitle();
         title = title.substring(0,
                 mPaint.breakText(title, true, drawingRect.right - drawingRect.left, null));
-        canvas.drawText(title, drawingRect.left, drawingRect.top, mPaint);
 
+        canvas.drawText(title, drawingRect.left, drawingRect.top, mPaint);
     }
 
     private void setEventDrawingRectangle(final int channelPosition, final long start, final long end, final Rect drawingRect) {
