@@ -36,6 +36,7 @@ import se.kmdev.tvepg.epg.misc.EPGUtil;
 public class EPG extends ViewGroup {
 
     private static final float SCROLL_FACTOR = 1.5f;                            // intensity of fling gestures
+    private static final boolean PREVENT_HORIZONTAL_VERTICAL_SCROLL_TOGETHER = true;
     private static final String MEASURE_TEXT = "Ag";                            // String used for measuring height of title
     public final String TAG = getClass().getSimpleName();
     public static final int DAYS_BACK_MILLIS = 3 * 24 * 60 * 60 * 1000;        // 3 days
@@ -668,6 +669,12 @@ public class EPG extends ViewGroup {
             int x = getScrollX();
             int y = getScrollY();
 
+
+            // Avoid scrolling in vertical and horizontal direction together
+            if (PREVENT_HORIZONTAL_VERTICAL_SCROLL_TOGETHER) {
+                dx = (Math.abs(dx) > Math.abs(dy)) ? dx : 0;
+                dy = (Math.abs(dy) > Math.abs(dx)) ? dy : 0;
+            }
 
             // Avoid over scrolling
             if (x + dx < 0) {
