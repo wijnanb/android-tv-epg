@@ -36,6 +36,7 @@ import se.kmdev.tvepg.epg.misc.EPGUtil;
 public class EPG extends ViewGroup {
 
     private static final float SCROLL_FACTOR = 1.5f;                            // intensity of fling gestures
+    private static final String MEASURE_TEXT = "Ag";                            // String used for measuring height of title
     public final String TAG = getClass().getSimpleName();
     public static final int DAYS_BACK_MILLIS = 3 * 24 * 60 * 60 * 1000;        // 3 days
     public static final int DAYS_FORWARD_MILLIS = 3 * 24 * 60 * 60 * 1000;     // 3 days
@@ -338,7 +339,8 @@ public class EPG extends ViewGroup {
         mPaint.setTextSize(mEventLayoutTextSize);
 
         // Move drawing.top so text will be centered (text is drawn bottom>up)
-        mPaint.getTextBounds(event.getTitle(), 0, event.getTitle().length(), mMeasuringRect);
+        String measureText = MEASURE_TEXT; // don't measure title here because capitals and descendants will make the text vary
+        mPaint.getTextBounds(measureText, 0, measureText.length(), mMeasuringRect);
         drawingRect.top += (((drawingRect.bottom - drawingRect.top) / 2) + (mMeasuringRect.height()/2));
 
         String title = event.getTitle();
